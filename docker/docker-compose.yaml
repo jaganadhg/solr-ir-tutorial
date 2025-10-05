@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  solr:
+    image: solr:9.9.0
+    container_name: solr-vector-search-v1
+    ports:
+      - "8983:8983"
+    volumes:
+      - solr_data:/var/solr
+      - ./configsets/conf:/opt/solr/server/solr/configsets/custom_config/conf:ro
+    environment:
+      - SOLR_HEAP=1g
+      - SOLR_JAVA_MEM=-Xms512m -Xmx1g -Dsolr.allowPaths=/var,/opt
+    command:
+      - bash
+      - -c
+      - |
+        cp -r /opt/solr/server/solr/configsets/_default/conf/* /opt/solr/server/solr/configsets/custom_config/conf/ 2>/dev/null || true
+        cp -r /opt/solr/server/solr/configsets/custom_config/conf /tmp/custom_config_backup/
+        cp -r /opt/solr/server/solr/configsets/_default/ /var/solr/data/configsets/_default
+        solr-precreate vector_collection /tmp/custom_config_backup
+    networks:
+      - solr-network-v1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:8983/solr/vector_collection/admin/ping || exit 1",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+networks:
+  solr-network-v1:
+    driver: bridge
+
+volumes:
+  solr_data:
+    driver: local

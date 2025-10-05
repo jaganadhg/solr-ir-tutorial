@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <luceneMatchVersion>9.7.0</luceneMatchVersion>
+
+  <dataDir>${solr.data.dir:}</dataDir>
+  <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"/>
+  <codecFactory class="solr.SchemaCodecFactory"/>
+
+  <indexConfig>
+    <lockType>${solr.lock.type:native}</lockType>
+    <useCompoundFile>false</useCompoundFile>
+    <ramBufferSizeMB>100</ramBufferSizeMB>
+    <maxBufferedDocs>1000</maxBufferedDocs>
+    
+    <mergePolicyFactory class="org.apache.solr.index.TieredMergePolicyFactory">
+      <int name="maxMergeAtOnce">10</int>
+      <int name="segmentsPerTier">10</int>
+    </mergePolicyFactory>
+  </indexConfig>
+
+  <updateHandler class="solr.DirectUpdateHandler2">
+    <updateLog>
+      <str name="dir">${solr.ulog.dir:}</str>
+      <int name="numVersionBuckets">${solr.ulog.numVersionBuckets:65536}</int>
+    </updateLog>
+    <autoCommit>
+      <maxTime>${solr.autoCommit.maxTime:15000}</maxTime>
+      <openSearcher>false</openSearcher>
+    </autoCommit>
+    <autoSoftCommit>
+      <maxTime>${solr.autoSoftCommit.maxTime:1000}</maxTime>
+    </autoSoftCommit>
+  </updateHandler>
+
+  <query>
+    <maxBooleanClauses>${solr.max.booleanClauses:1024}</maxBooleanClauses>
+    <filterCache size="512" initialSize="512" autowarmCount="0"/>
+    <queryResultCache size="512" initialSize="512" autowarmCount="0"/>
+    <documentCache size="512" initialSize="512" autowarmCount="0"/>
+    <enableLazyFieldLoading>true</enableLazyFieldLoading>
+  </query>
+
+  <requestDispatcher>
+    <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="-1" formdataUploadLimitInKB="-1" addHttpRequestToContext="false"/>
+    <httpCaching never304="true"/>
+  </requestDispatcher>
+
+  <requestHandler name="/select" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <int name="rows">10</int>
+      <str name="df">text</str>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="/traditional" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <int name="rows">10</int>
+      <str name="defType">edismax</str>
+      <str name="qf">title^3 content^2 category</str>
+      <str name="pf">title^5 content^3</str>
+      <str name="df">text</str>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="/vector" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <int name="rows">10</int>
+      <str name="fl">*,score</str>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="/hybrid" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <int name="rows">10</int>
+      <str name="defType">edismax</str>
+      <str name="qf">title^3 content^2 category</str>
+      <str name="fl">*,score</str>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="/update" class="solr.UpdateRequestHandler"/>
+
+  <requestHandler name="/admin/ping" class="solr.PingRequestHandler">
+    <lst name="invariants">
+      <str name="q">*:*</str>
+    </lst>
+    <lst name="defaults">
+      <str name="echoParams">all</str>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="/analysis/field" startup="lazy" class="solr.FieldAnalysisRequestHandler"/>
+  <requestHandler name="/analysis/document" class="solr.DocumentAnalysisRequestHandler" startup="lazy"/>
+  <requestHandler name="/replication" class="solr.ReplicationHandler"/>
+
+  <searchComponent name="query" class="solr.QueryComponent"/>
+  <searchComponent name="facet" class="solr.FacetComponent"/>
+  <searchComponent name="highlight" class="solr.HighlightComponent">
+    <highlighting>
+      <fragmenter name="gap" default="true" class="solr.highlight.GapFragmenter">
+        <lst name="defaults">
+          <int name="hl.fragsize">100</int>
+        </lst>
+      </fragmenter>
+      <formatter name="html" default="true" class="solr.highlight.HtmlFormatter">
+        <lst name="defaults">
+          <str name="hl.simple.pre">&lt;em&gt;</str>
+          <str name="hl.simple.post">&lt;/em&gt;</str>
+        </lst>
+      </formatter>
+    </highlighting>
+  </searchComponent>
+
+  <queryResponseWriter name="json" class="solr.JSONResponseWriter">
+    <str name="content-type">application/json; charset=UTF-8</str>
+  </queryResponseWriter>
+
+  <queryResponseWriter name="xml" class="solr.XMLResponseWriter"/>
+
+</config>
