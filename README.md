@@ -16,6 +16,6 @@ hybrid search. You will learn how to:
 
 ## Smoke Test
 
-A quick verification of basic Solr operations is provided in the `0-smoketest` directory. See [0-smoketest/notes.md](0-smoketest/notes.md) for setup and usage details.
+A quick verification of basic Solr operations is provided in the `0-smoketest` directory. See [0-smoketest/notes.md](0-smoketest/README.md) for setup and usage details.
 
 
