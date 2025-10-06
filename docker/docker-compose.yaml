@@ -18,7 +18,8 @@ services:
       - |
         cp -r /opt/solr/server/solr/configsets/_default/conf/* /opt/solr/server/solr/configsets/custom_config/conf/ 2>/dev/null || true
         cp -r /opt/solr/server/solr/configsets/custom_config/conf /tmp/custom_config_backup/
-        cp -r /opt/solr/server/solr/configsets/_default/ /var/solr/data/configsets/_default
+        mkdir -p /var/solr/data/configsets
+        cp -r /opt/solr/server/solr/configsets/_default/ /var/solr/data/configsets/_default/
         solr-precreate vector_collection /tmp/custom_config_backup
     networks:
       - solr-network-v1
