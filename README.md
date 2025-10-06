@@ -12,4 +12,10 @@ hybrid search. You will learn how to:
 ### Prerequisites:
 
 - Docker & Docker Compose installed on your machine.
-- Python 3.x and required dependencies 
+- Python 3.x and required dependencies
+
+## Smoke Test
+
+A quick verification of basic Solr operations is provided in the `0-smoketest` directory. See [0-smoketest/notes.md](0-smoketest/notes.md) for setup and usage details.
+
+
