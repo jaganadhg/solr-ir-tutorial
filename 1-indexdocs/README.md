@@ -55,6 +55,34 @@ By default, the script will:
 - Verify that the required Python packages are installed in the Poetry environment.
 - Check logs for HTTP errors when creating cores or indexing documents.
 
+
+If the documents are indexed successfully, you should see output like this 
+From the script:
+
+```
+
+=== Creating Core ===
+✓ Core 'cranfiled_docs' created successfully
+
+=== Defining Schema ===
+✓ Field type 'vector' configured with HNSW indexing
+✓ Added field: doc_id
+✓ Added field: title
+✓ Added field: text
+✓ Added field: author
+✓ Added field: bib
+✓ Added field: vector
+
+=== Indexing Documents ===
+✓ Indexed 1400 documents successfully
+
+All done!
+``` 
+from the Solr UI
+
+![alt text](imag/0-solr-query-res.png)
+
+
 ---
 
 Happy indexing!
