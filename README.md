@@ -16,6 +16,9 @@ hybrid search. You will learn how to:
 
 ## Smoke Test
 
-A quick verification of basic Solr operations is provided in the `0-smoketest` directory. See [0-smoketest/notes.md](0-smoketest/README.md) for setup and usage details.
+A quick verification of basic Solr operations is provided in the `0-smoketest` directory. See [0-smoketest/README.md](0-smoketest/README.md) for setup and usage details.
+
+## Indexing Cranfield Documents into Solr
+A script to index Cranfield documents with BERT embeddings into Solr is provided in the `1-indexdocs` directory. See [1-indexdocs/README.md](1-indexdocs/README.md) for setup and usage details.
 
 
