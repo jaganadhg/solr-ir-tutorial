@@ -80,7 +80,7 @@ All done!
 ``` 
 from the Solr UI
 
-![alt text](imag/0-solr-query-res.png)
+![alt text](img/0-solr-query-res.png)
 
 
 ---
