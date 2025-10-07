@@ -19,6 +19,12 @@ hybrid search. You will learn how to:
 A quick verification of basic Solr operations is provided in the `0-smoketest` directory. See [0-smoketest/README.md](0-smoketest/README.md) for setup and usage details.
 
 ## Indexing Cranfield Documents into Solr
+
 A script to index Cranfield documents with BERT embeddings into Solr is provided in the `1-indexdocs` directory. See [1-indexdocs/README.md](1-indexdocs/README.md) for setup and usage details.
 
 
+## Create a Query Framework
+
+A simple query framework to experiment with different retrieval strategies (keyword, vector, hybrid). This framework will be built from scratch as part of the tutorial.
+
+See [2-query-framework/README.md](2-query-framework/README.md) for setup and usage details.
